@@ -1,0 +1,13 @@
+{
+    "repos": [
+        "microsoft/vscode",
+        "xamarin/Xamarin.Forms",
+        "actions/runner"
+    ],
+    "routes": {
+        "repo": "GET /repos/{repo}",
+        "forks": "GET /repos/{repo}/forks",
+        "issues": "GET /repos/{repo}/issues",
+        "pulls" : "GET /repos/{repo}/pulls"
+    }
+} 
