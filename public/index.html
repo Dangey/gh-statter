@@ -6,13 +6,24 @@
 <style>
       h1 {text-align: center; font-size: 250%;}
       p {text-align: center; font-size: 130%;}
-      div {text-align: center;}
+      div {text-align: center; display: block; font-size: 100%;}
+      img {width:50%; height: 50%; margin-top:5%;}
+      table, th, td {border:1px solid black; width:20%; font-size: 110%; text-align: center;}
+      a { color: blue;}
 </style>
 <body id="body">
     <h1>GHStatter</h1>
     <p>Search for public GitHub repositories and display their stats.</p>
-    <p>Pulls | Issues | Forks</p>
-    <div id="results"></div>
-    <script type="text/javascript" src="js/main.js"></script>
+    <p>Forks | Watchers | Stars | Open Issues</p>
+    <table style="width:100%;" id="tab">
+        <tr>
+            <th>Repository</th>
+            <th>Forks</th>
+            <th>Stars</th>
+            <th>Watchers</th>
+            <th>Open Issues</th>
+        </tr>
+        <!--REPLACE-->
+    </table>
 </body>
 </html>
