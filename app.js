@@ -1,47 +1,33 @@
 const express = require('express');
 const app = express();
 
-const port = 3002;
+const port = 3001;
 
 app.use(express.static('public'));
 
 //global vars
 const fs = require('fs');
 const common = JSON.parse(fs.readFileSync('./public/common.json'));
+//
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)
-    if (setExamples())
-    {
-        console.log("Set Examples");
-    }
-    else
-        console.log("Failed to set examples");
 });
 
-app.get('/', (req, res) => {
-    res.sendFile('public/index.html');
+app.get('/examples', async (req, res) => {
+    res.send( await generateExamples() );
 });
-
-function replaceTextInFile(fs, filename, replacement)
-{
-    fs.readFile(filename, 'utf8', function (err,data) {
-        if (err) { return console.log(err); }
-
-        var result = data.replace(/<!--REPLACE-->/g, replacement);
-
-        fs.writeFile(filename, result, 'utf8', function (err) {
-            if (err) return console.log(err);
-        });
-    });
-}
 
 function convertToHTML(data)
 {
     let html = ``;
-    for (row in data)
+
+    for (column in data)
     {
-        for (column in row)
+        const order = column;
+        column = data[column];
+
+        if (order == 0) //how to parse specific data - 0 for repo get
         {
             const repoName = column[0];
             const ownerImage = column[1];
@@ -122,27 +108,21 @@ async function requestData(repo, retryLimit)
         }
     }
 
-    console.log(repoEntry);
     return repoEntry;
 }
 
-async function setExamples()
+async function generateExamples()
 {
     const repos = common.repos;
 
-    const retries = 3;
-    const results = [];
+    const apiRetries = 3;
+    let dataHTML = '';
 
     for (let repo in repos)
     {
         repo = repos[repo];
-        results.push( await requestData(repo, retries) );
+        dataHTML += convertToHTML( await requestData(repo, apiRetries) );
     }
 
-    console.log(results);
-
-    //const dataHtml = convertToHTML(results);
-    //replaceTextInFile(fs, './public/index.html', dataHtml);
-
-    return true;
+    return dataHTML;
 }

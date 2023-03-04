@@ -1,9 +1,12 @@
 console.log('Client-side code running');
 
-fetch('/', {method: 'GET'})
+fetch('/examples', {method: 'GET'})
     .then(async function(response) {
       if(response.ok) {
-        document.getElementById("text").innerHTML = await response.text();
+        console.log("Response good!");
+        const responseText = await response.text();
+        console.log(responseText);
+        document.getElementById("tab").innerHTML += responseText;
         return;
       }
       throw new Error('Request failed.');
